@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>AlphaFolio – Weiterleitung</title>
+  <style>
+    body { font-family: sans-serif; background: #0a0a14; color: #eee;
+           display: flex; align-items: center; justify-content: center;
+           height: 100vh; margin: 0; }
+    .box { text-align: center; }
+    h1 { color: #00d4a0; font-size: 24px; }
+    p  { color: #888; margin-top: 6px; }
+  </style>
+</head>
+<body>
+<div class="box">
+  <h1 id="msg">Weiterleitung…</h1>
+  <p id="sub">Bitte warten</p>
+</div>
+<script>
+  const p = new URLSearchParams(window.location.search);
+  const code  = p.get("code");
+  const state = p.get("state");
+  const error = p.get("error");
+  if (error) {
+    document.getElementById("msg").textContent = "✗ Fehler";
+    document.getElementById("sub").textContent = error;
+  } else if (code) {
+    const target = "alphafolio://auth?code=" + encodeURIComponent(code)
+                 + (state ? "&state=" + encodeURIComponent(state) : "");
+    window.location.href = target;
+    document.getElementById("msg").textContent = "✓ Verbunden";
+    document.getElementById("sub").textContent = "Du kannst dieses Tab schließen.";
+  } else {
+    document.getElementById("msg").textContent = "Kein Code empfangen";
+  }
+</script>
+</body>
+</html>
